@@ -1,19 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
-import { Button } from 'antd';
+import { Col, Row } from 'antd';
+import MainMenu from './components/header/MainMenu';
+import { Layout, Breadcrumb } from 'antd';
+import { connect } from 'react-redux'
+import { MENU_LABEL } from './Constants';
 
-function App() {
+const App = ({current}) => {
+  const { Header, Content, Footer } = Layout;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <Button type="primary">Button</Button>
-      </header>
-    </div>
+    <Layout>
+      <Header className="header">
+        <Row>
+          <Col span={2}>
+            <span className="logo" />
+          </Col>
+          <Col span={22}>
+            <MainMenu/>
+          </Col>
+        </Row>
+      </Header>
+      <Content style={{ padding: '0 50px', marginTop: 20 }}>
+        <Breadcrumb style={{ margin: '16px 0' }}>
+          <Breadcrumb.Item>{MENU_LABEL[current]}</Breadcrumb.Item>
+        </Breadcrumb>
+        <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>Content</div>
+      </Content>
+      <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+    </Layout>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    current: state.menu
+  }
+}
+
+const AppWithConnect = connect(mapStateToProps)(App)
+export default AppWithConnect
